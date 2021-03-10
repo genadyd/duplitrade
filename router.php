@@ -6,14 +6,22 @@
  * Time: 1:45 AM
  */
 
-use Bramus\Router\Router;
+
 /**
  * bramus/router composer package
  * */
+
+use App\Controllers\CsvProcessingController;
+use Bramus\Router\Router;
+
 $router = new Router();
 
+$router->get('/',function() {
+    $controller = new CsvProcessingController();
+    $controller->processor();
+});
+
 $router->set404(function() {
-//    $controller = new FormController();
-//    echo $controller->index();
+    echo 'aaaa';
 });
 $router->run();

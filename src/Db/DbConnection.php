@@ -19,7 +19,7 @@ class DbConnection
     {
     } /*hold static class*/
 
-    private static ?DbConnection $instance = NULL;
+    private static DbConnection|null $instance = NULL;
 
     public static function getConnection():?PDO
     {
@@ -32,7 +32,7 @@ class DbConnection
     /**
      * @return PDO|null
      */
-    private function connection():?PDO
+    private function connection():PDO|null
     {
         $db_config = array(
             'host'=>'localhost',
