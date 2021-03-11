@@ -36,7 +36,7 @@ final class TicketsModel extends MainModel
         $columns = $this->getTableColumns();
         foreach($data_array as $key => $val){
          $val['PositionType'] = $statuses[$val['PositionType']]??'';
-         $val['Instrument_Name'] = $instruments[$val['Instrument_Name']]??'';
+         $val['Instrument_Name'] = $instruments[$val['Instrument_Name']]?? $instruments['not_defined'];
          $val['Type'] = $types[$val['Type']]??'';
 
              $markers[] = $this->setMarkers(count($val) + 1);
@@ -53,7 +53,7 @@ final class TicketsModel extends MainModel
             $st->execute($values);
 
         }catch (PDOException $a){
-//           echo $a->getMessage();
+           echo $a->getMessage();
             /** do nothing */
         }
 

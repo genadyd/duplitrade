@@ -107,6 +107,7 @@ class DataSeparator
 
     public function getInstruments(): array
     {
+        $this->instruments['not_defined']=0;
         return $this->instruments;
     }
 

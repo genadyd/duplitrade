@@ -36,6 +36,9 @@ final class CsvProcessingController
         $this->modelsInit();
     }
 
+    /**
+     *
+     */
     public function processor():void{
         $start = microtime(true);
         $csv_rider = new CsvReader();
@@ -50,6 +53,10 @@ final class CsvProcessingController
         echo  (microtime(true)-$start). "\n";
 
     }
+
+    /**
+     *
+     */
     private function modelsInit():void{
         $this->instruments_model = new InstrumentsModel();
         $this->statuses_model = new StatusesModel();
