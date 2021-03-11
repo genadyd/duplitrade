@@ -101,6 +101,9 @@ class DataSeparator
     {
         return $this->tickets;
     }
+    public function getAlerts(){
+        return $this->alerts_tickets;
+    }
 
     public function getInstruments(): array
     {
@@ -120,7 +123,14 @@ class DataSeparator
     {
         return $this->trading_rooms;
     }
-    private function searchByUniq($array_for_search,$field_name, $uniq){
+
+    /**
+     * @param array $array_for_search
+     * @param string $field_name
+     * @param int|string $uniq
+     * @return int|string|null
+     */
+    private function searchByUniq(array $array_for_search, string $field_name, int|string $uniq):int|string|null{
         foreach ($array_for_search as $key => $val){
             if($uniq == $val[$field_name]){
                 return $key;
