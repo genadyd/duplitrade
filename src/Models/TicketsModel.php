@@ -44,8 +44,8 @@ final class TicketsModel extends MainModel
              $values = array_merge($values, $this->setValues($val));
 
         }
-
         /**------------------------*/
+
         /** Insert data */
        $query = "INSERT INTO tickets ( ".implode(', ',$columns)." ) VALUES  ".implode(', ',$markers);
        $st = $this->db->prepare($query);
@@ -54,7 +54,7 @@ final class TicketsModel extends MainModel
             $st->execute($values);
 
         }catch (PDOException $a){
-//           echo $a->getMessage();
+           echo $a->getMessage();
             /** do nothing */
         }
 
@@ -99,13 +99,28 @@ final class TicketsModel extends MainModel
         $v[] = preg_match('/\d{10}/',$values_row['CloseTimestamp'])?date("Y-m-d H:i:s",(int)$values_row['CloseTimestamp']):NULL;
         $v[] = floatval($values_row['calculatedBalance']);
         $v[] = (int)$values_row['closed_positions_cnt'];
-        $v[] = '"Years:1, Mounts 2"';
+        $v[] = $this->timeDifCalculate($values_row['OpenTimestamp'], $values_row['CloseTimestamp']);
       return $v;
     }
 
+    /**
+     * @return array
+     */
     private function getTableColumns():array{
         $query = "SHOW COLUMNS FROM ".$this->table_name;
         return  $this->db->query($query)->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    /**
+     * @param string $start
+     * @param string $end
+     * @return false|int|null
+     */
+    private function timeDifCalculate(string $start, string $end):bool|int|null{
+        if(preg_match('/\d{10}/',$start) && preg_match('/\d{10}/',$end)){
+            return strtotime(date("Y-m-d H:i:s",(int)$end))-strtotime(date("Y-m-d H:i:s",(int)$start));
+        }
+        return NULL;
     }
 
 }
