@@ -27,6 +27,7 @@ class CsvReader
         fclose($resource);
         return $res;
     }
+    /** experiences improve performance */
 //    public function getFileData($file = "tickets.csv"): Generator{
 //        $resource = fopen($file, "r");
 //        while (feof($resource) === false) {
