@@ -36,7 +36,7 @@ class DbConnection
     {
         $db_config = array(
             'host'=>'localhost',
-            'db_name'=>'pdac',
+            'db_name'=>'duplitrade',
             'db_user'=>'root',
             'db_pass'=>'1234'
         );

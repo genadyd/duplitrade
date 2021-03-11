@@ -16,9 +16,17 @@ class DataSeparator
     private array $instruments;
     private array $statuses;
     private array $types;
+    private array $trading_rooms;
+    private array $alerts_tickets;
 
     public function __construct(private array $data)
     {
+        $this->instruments = [];
+        $this->types = [];
+        $this->tickets = [];
+        $this->alerts_tickets = [];
+        $this->statuses = [];
+        $this->trading_rooms = [];
         $this->separate();
     }
 
@@ -33,7 +41,7 @@ class DataSeparator
             $row_elem = [];
             foreach ($row as $field_key => $field) {
                 if ($key === 0) {
-                    /** if first row */
+                    /** if first row (headers) */
                     $header[$field_key] = $field;
                 } else {
                     /** tickets array row reformat (header_key=>field_value)*/
@@ -43,11 +51,32 @@ class DataSeparator
             }
             if (count($row_elem)) {
                 /** tickets array build */
-                $this->tickets[] = $row_elem;
-
+                if(is_null($this->searchByUniq($this->tickets, 'Ticket_ID', $row_elem['Ticket_ID']))) {
+                    $this->tickets[] = $row_elem;
+                }
+                else{
+                    $this->alerts_tickets[] = $row_elem;
+                }
                 /** instruments array build */
-                $this->buildInstrumentsArray($row_elem['Instrument_Name']);
+                $this->arrayCreate($row_elem['Instrument_Name'],
+                    $this->instruments,
+                    fn($val)=> preg_match('/^[A-Z\d_-]{6,}$/i', $val));
 
+
+                /** types array build */
+                $this->arrayCreate($row_elem['Type'],
+                    $this->types,
+                    fn($val)=> preg_match('/^[a-z]{3,}$/i', $val));
+
+                /** statuses array build */
+                $this->arrayCreate($row_elem['PositionType'],
+                    $this->statuses,
+                    fn($val)=> preg_match('/^[a-z]+$/i', $val));
+
+                /** trading rooms build */
+                $this->arrayCreate($row_elem['trading_room_ID'],
+                    $this->trading_rooms,
+                    fn($val)=> preg_match('/^[\d]+$/i', $val));
 
             }
 
@@ -55,12 +84,16 @@ class DataSeparator
     }
 
     /**
-     * @param string $instrument_string
+     * @param string $inserted_string
+     * @param array $arrayToChange
+     * @param callable|bool $callback
      */
-    private function buildInstrumentsArray(string $instrument_string): void
+    private function arrayCreate( string $inserted_string, array &$arrayToChange=[], callable|bool $callback = false): void
     {
-        if (preg_match('/[A-Z]{6}/', $instrument_string)) {
-            $this->instruments[$instrument_string] = 0;
+        if(is_callable($callback) ){
+            if($callback($inserted_string)){
+                $arrayToChange[$inserted_string]=0;
+            }
         }
     }
 
@@ -76,11 +109,24 @@ class DataSeparator
 
     public function getStatuses(): array
     {
-
+        return $this->statuses;
     }
 
     public function getTypes(): array
     {
+        return $this->types;
+    }
+    public function getTradingRooms():array
+    {
+        return $this->trading_rooms;
+    }
+    private function searchByUniq($array_for_search,$field_name, $uniq){
+        foreach ($array_for_search as $key => $val){
+            if($uniq == $val[$field_name]){
+                return $key;
+            }
+        }
+        return NULL;
 
     }
 }
