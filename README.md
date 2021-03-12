@@ -1,4 +1,4 @@
-  ##Duplitrade
+## Duplitrade
 
 #### In the Project:
 Apache/2.4.46 (Ubuntu)<br>
@@ -7,7 +7,7 @@ MYSQL:8.0.23<br>
 Composer: 2.0.8<br>
 Composer packages: 1.Autoload, 2.bramus_router
 
-###Read csv file and save data in DB
+### Read csv file and save data in DB
 
 1.For db normalize I created 5 tables
   tickets, trading_rooms, types, instruments and statuses
@@ -30,7 +30,7 @@ All models use DbConnection module src/Db/DbConnection
 6.For prepare data to Tickets and alert_tickets tables i use TicketsModelHelperTrait
 src/Traits/TicketsModelHelperTrait.php
 
-###Calculate monthly profit and save the result into DB
+### Calculate monthly profit and save the result into DB
 
 1. For initialise the process i use ProfitCalculationController 
 src/Controllers/ProfitCalculationController.php
