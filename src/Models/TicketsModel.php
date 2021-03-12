@@ -54,7 +54,7 @@ final class TicketsModel extends MainModel
             $st->execute($values);
 
         } catch (PDOException $a) {
-            echo $a->getMessage();
+//            echo $a->getMessage();
             /** do nothing */
         }
     }
