@@ -59,7 +59,10 @@ final class TicketsModel extends MainModel
         }
     }
 
-    public function getProfits()
+    /**
+     * @return array|bool
+     */
+    public function getProfits():array|bool
     {
         $query = "SELECT trading_room, S_YEAR, AVG(PROFIT) AS PROFIT FROM(
                   SELECT trading_room, year(close_time) AS S_YEAR, month(close_time), sum(take_profit) AS PROFIT

@@ -21,7 +21,10 @@ class ProfitsCalculateTableModel extends MainModel implements IModels
         $this->table_name = 'profit_calculate';
     }
 
-    public function create(array $data_array)
+    /**
+     * @param array $data_array
+     */
+    public function create(array $data_array):void
     {
         $query = " INSERT INTO ".$this->table_name ."( traiding_room_id, per_year, monthly_avg_profit ) 
        VALUES (:ROOM, :PER_YEAR, :PROFIT ) ";
