@@ -16,6 +16,7 @@ use PDOException;
 final class TicketsModel extends MainModel
 {
     use TicketsModelHelperTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -34,28 +35,38 @@ final class TicketsModel extends MainModel
         $markers = [];
         $values = [];
         $columns = $this->getTableColumns();
-        foreach($data_array as $key => $val){
-         $val['PositionType'] = $statuses[$val['PositionType']]??'';
-         $val['Instrument_Name'] = $instruments[$val['Instrument_Name']]?? $instruments['not_defined'];
-         $val['Type'] = $types[$val['Type']]??'';
+        foreach ($data_array as $key => $val) {
+            $val['PositionType'] = $statuses[$val['PositionType']] ?? '';
+            $val['Instrument_Name'] = $instruments[$val['Instrument_Name']] ?? $instruments['not_defined'];
+            $val['Type'] = $types[$val['Type']] ?? '';
 
-             $markers[] = $this->setMarkers(count($val) + 1);
-             $values = array_merge($values, $this->setValues($val));
+            $markers[] = $this->setMarkers(count($val) + 1);
+            $values = array_merge($values, $this->setValues($val));
 
         }
         /**------------------------*/
 
         /** Insert data */
-       $query = "INSERT INTO ".$this->table_name." ( ".implode(', ',$columns)." ) VALUES  ".implode(', ',$markers);
-       $st = $this->db->prepare($query);
+        $query = "INSERT INTO " . $this->table_name . " ( " . implode(', ', $columns) . " ) VALUES  " . implode(', ', $markers);
+        $st = $this->db->prepare($query);
 
         try {
             $st->execute($values);
 
-        }catch (PDOException $a){
-           echo $a->getMessage();
+        } catch (PDOException $a) {
+            echo $a->getMessage();
             /** do nothing */
         }
+    }
 
+    public function getProfits()
+    {
+        $query = "SELECT trading_room, S_YEAR, AVG(PROFIT) AS PROFIT FROM(
+                  SELECT trading_room, year(close_time) AS S_YEAR, month(close_time), sum(take_profit) AS PROFIT
+                  FROM ".$this->table_name."
+                  WHERE close_time IS NOT NULL
+                  GROUP BY trading_room, year(close_time), month(close_time)) AS C_SEARCH
+                  GROUP BY trading_room, S_YEAR";
+        return $this->db->query($query)->fetchAll(\PDO::FETCH_ASSOC);;
     }
 }

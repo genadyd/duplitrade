@@ -12,6 +12,7 @@
  * */
 
 use App\Controllers\CsvProcessingController;
+use App\Controllers\ProfitCalculationController;
 use Bramus\Router\Router;
 
 $router = new Router();
@@ -19,6 +20,10 @@ $router = new Router();
 $router->get('/',function() {
     $controller = new CsvProcessingController();
     $controller->processor();
+});
+$router->get('/calc',function() {
+    $controller = new ProfitCalculationController();
+    $controller->index();
 });
 
 $router->set404(function() {
