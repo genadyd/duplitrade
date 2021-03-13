@@ -42,15 +42,24 @@ final class CsvProcessingController
     public function processor():void{
         $start = microtime(true);
         $csv_rider = new CsvReader();
-        $separator = new DataSeparator( $csv_rider->getFileData());
-        $this->instruments_model->create($separator->getInstruments());
-        $this->statuses_model->create($separator->getStatuses());
-        $this->trading_rums_model->create($separator->getTradingRooms());
-        $this->types_model->create($separator->getTypes());
-        $this->tickets_model->create($separator->getTickets());
-        $this->alerts_model->create($separator->getAlerts());
-
+        $headers = [];
+        foreach($csv_rider->getFileData() as $key => $file_string){
+//            $separator = new DataSeparator();
+            var_dump($file_string);
+            echo '<br>';
+        };
         echo  (microtime(true)-$start). "\n";
+        echo memory_get_usage();
+        return;
+//        $separator = new DataSeparator( $csv_rider->getFileData());
+//        $this->instruments_model->create($separator->getInstruments());
+//        $this->statuses_model->create($separator->getStatuses());
+//        $this->trading_rums_model->create($separator->getTradingRooms());
+//        $this->types_model->create($separator->getTypes());
+//        $this->tickets_model->create($separator->getTickets());
+//        $this->alerts_model->create($separator->getAlerts());
+
+
 
     }
 
