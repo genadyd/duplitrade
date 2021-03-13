@@ -44,7 +44,17 @@ final class CsvProcessingController
         $csv_rider = new CsvReader();
         $headers = [];
         foreach($csv_rider->getFileData() as $key => $file_string){
-//            $separator = new DataSeparator();
+            if($key === 0){
+                /**
+                 * get headers
+                 */
+                $headers = $file_string;
+            }else{
+                /**
+                 * file row reformat - coll_header=>coll_value
+                 */
+                $file_string =  array_combine($headers, $file_string);
+            }
             var_dump($file_string);
             echo '<br>';
         };
