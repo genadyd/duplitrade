@@ -66,8 +66,11 @@ final class CsvProcessingController
                 /** rooms insert */
                 $room_id = $this->trading_rums_model->create(array('id'=>$file_string['trading_room_ID'], 'data'=>'some_data'));
 
+               /** change data in array */
+                $this->changeStringDataByGoregnKeys($file_string['PositionType'], $status_id);/*status*/
+                $this->changeStringDataByGoregnKeys($file_string['Instrument_Name'], $instrument_id);/*status*/
+                $this->changeStringDataByGoregnKeys($file_string['Type'], $type_id);/*status*/
 
-                var_dump($room_id);
             }
 
             echo '<br>';
@@ -99,6 +102,9 @@ final class CsvProcessingController
         $this->types_model = new TypesModel();
         $this->tickets_model = new TicketsModel();
         $this->alerts_model = new AlertsModel();
+    }
+    private function changeStringDataByGoregnKeys(&$field, $new_param){
+        $field = $new_param;
     }
 
 
