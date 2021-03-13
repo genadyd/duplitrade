@@ -12,6 +12,9 @@ namespace App\Models;
 
 
 
+use PDO;
+use PDOException;
+
 final class TradingRoomsModel extends MainModel
 {
     public function __construct()
@@ -22,8 +25,20 @@ final class TradingRoomsModel extends MainModel
 
     }
 
-    public function create(array $data_array)
+    public function create(array|string $data):int
     {
-        parent::create($data_array);
+
+       if(!$this->getById($data['id'])) {
+           $query = "INSERT INTO " . $this->table_name . " (id, some_data) VALUES(:ID, :DATA)";
+           $st = $this->db->prepare($query);
+           $st->bindParam(":ID", $data['id'], PDO::PARAM_INT);
+           $st->bindParam(":DATA", $data['data'], PDO::PARAM_STR);
+           try {
+               $st->execute();
+           }catch (PDOException $e){
+               /** do nothing */
+           }
+       }
+       return $data['id']; /** By this method signature i must return @var int $id */
     }
 }

@@ -19,9 +19,8 @@ final class InstrumentsModel extends MainModel implements IModels
         $this->table_name = 'instruments';
     }
 
-    public function create(array $data_array)
+    public function create(array|string $data):int
     {
-      parent::create($data_array);
-
+     return parent::create($data);
     }
 }

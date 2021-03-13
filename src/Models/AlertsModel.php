@@ -22,7 +22,7 @@ final class AlertsModel extends MainModel implements IModels
         parent::__construct();
         $this->table_name = 'alerts_tickets';
     }
-    public function create(array $data_array)
+    public function create(array|string $data):int|bool
     {
         /** params prepare */
         $statuses = $this->getStatuses();
@@ -32,7 +32,7 @@ final class AlertsModel extends MainModel implements IModels
         $values = [];
         $columns = $this->getTableColumns();
         array_shift($columns);
-        foreach($data_array as $key => $val){
+        foreach($data as $key => $val){
             $val['PositionType'] = $statuses[$val['PositionType']]??'';
             $val['Instrument_Name'] = $instruments[$val['Instrument_Name']]??'';
             $val['Type'] = $types[$val['Type']]??'';
@@ -53,6 +53,7 @@ final class AlertsModel extends MainModel implements IModels
 //            echo $a->getMessage();
             /** do nothing */
         }
+        return 1;
     }
 
 

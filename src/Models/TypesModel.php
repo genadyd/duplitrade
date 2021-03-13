@@ -12,6 +12,7 @@ namespace App\Models;
 
 final class TypesModel extends MainModel
 {
+//    protected static array $check_array;
     public function __construct()
     {
         parent::__construct();
@@ -20,9 +21,9 @@ final class TypesModel extends MainModel
 
     }
 
-    public function create(array $data_array)
+    public function create(array|string $data):int|bool
     {
-        parent::create($data_array);
+       return parent::create($data);
     }
 
 }
