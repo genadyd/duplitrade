@@ -26,23 +26,23 @@ final class TicketsModel extends MainModel
 
     /**
      * @param array|string $data
-     * @return array|bool
+     * @param string $val_for_check
+     * @return array|bool|int
      */
     public function create(array|string $data, string $val_for_check=''):array|bool|int
     {
 
-        if($this->getById($data['Ticket_ID'])){
-            return $data;
+        if($this->getById((int)$data['Ticket_ID'])){
+            echo 'Model';
+            return false;
         }
         /** params prepare */
         $this->setValues($data);
         $markers = [];
         $columns = $this->getTableColumns();
         $data['dif_calculate'] = $this->timeDifCalculate($data['OpenTimestamp'], $data['CloseTimestamp']);
-        $counter = 0;
         for ($i = 0; $i<count($data);$i++ ) {
-            $markers[$counter] = ':'.strtoupper($columns[$counter]);
-            $counter++;
+            $markers[$i] = ':'.strtoupper($columns[$i]);
         }
         /**------------------------*/
 
@@ -78,7 +78,7 @@ final class TicketsModel extends MainModel
             $st->execute();
 
         } catch (PDOException $a) {
-//            echo $a->getMessage();
+            echo $a->getMessage();
             /** do nothing */
         }
         return true;

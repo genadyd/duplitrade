@@ -14,20 +14,12 @@ use Generator;
 
 class CsvReader
 {
-//    /**
-//     * @param string $file
-//     * @return array
-//     */
-//    public function getFileData():array{
-//        $resource = fopen("tickets.csv", "r");
-//        $res = [];
-//        while (($data = fgetcsv($resource)) !== FALSE) {
-//            $res[] = $data;
-//        }
-//        fclose($resource);
-//        return $res;
-//    }
     /** experiences improve performance */
+
+    /**
+     * @param string $file
+     * @return Generator
+     */
     public function getFileData($file = "tickets.csv"): Generator{
         $resource = fopen($file, "r");
         while (feof($resource) === false) {
@@ -36,12 +28,5 @@ class CsvReader
         fclose($resource);
 
     }
-//    public function getFileObject(){
-//        $res = [];
-//        foreach ($this->getFileData() as $row){
-//            $res[]=  $row;
-//        }
-//        return $res;
-//    }
 
 }

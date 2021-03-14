@@ -71,7 +71,11 @@ final class CsvProcessingController
                 $this->changeStringDataByForegnKeys($file_string['Type'], $type_id);/*type*/
 
                 /** tickets insert */
-                $this->tickets_model->create($file_string);
+                if(!$this->tickets_model->create($file_string)){
+                    echo($file_string['Ticket_ID']);
+                    /** if the record exists create alert record */
+                    $this->alerts_model->create($file_string);
+                }
 
             }
         }
