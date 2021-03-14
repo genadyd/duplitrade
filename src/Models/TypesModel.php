@@ -21,9 +21,9 @@ final class TypesModel extends MainModel
 
     }
 
-    public function create(array|string $data):int|bool
-    {
-       return parent::create($data);
-    }
+//    public function create(array|string $data):int|bool
+//    {
+//       return parent::create($data);
+//    }
 
 }

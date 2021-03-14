@@ -53,41 +53,34 @@ final class CsvProcessingController
                 $file_string = array_combine($headers, $file_string);
 
                 /** instruments insert*/
-                $instrument_id = $this->instruments_model->create(preg_match('/^[A-Z\d_-]{6,}$/i',
-                    $file_string['Instrument_Name']) ? $file_string['Instrument_Name'] : 'not_defined');
+                $instrument = preg_match('/^[A-Z\d_-]{6,}$/i', $file_string['Instrument_Name']) ? $file_string['Instrument_Name'] : 'not_defined';
+                $instrument_id = $this->instruments_model->create($instrument, $instrument);
 
                 /** statuses insert */
-                $status_id = $this->statuses_model->create($file_string['PositionType']);
-
+                $status_id = $this->statuses_model->create($file_string['PositionType'],$file_string['PositionType']);
+//
                 /** types insert */
-                $type_id = $this->types_model->create($file_string['Type']);
-
-                /** rooms insert */
+                $type_id = $this->types_model->create($file_string['Type'],$file_string['Type']);
+//
+//                /** rooms insert */
                 $room_id = $this->trading_rums_model->create(array('id'=>$file_string['trading_room_ID'], 'data'=>'some_data'));
 
-               /** change data in array */
-                $this->changeStringDataByGoregnKeys($file_string['PositionType'], $status_id);/*status*/
-                $this->changeStringDataByGoregnKeys($file_string['Instrument_Name'], $instrument_id);/*status*/
-                $this->changeStringDataByGoregnKeys($file_string['Type'], $type_id);/*status*/
+               /** change data in tickets array */
+                $this->changeStringDataByForegnKeys($file_string['PositionType'], $status_id);/*status*/
+                $this->changeStringDataByForegnKeys($file_string['Instrument_Name'], $instrument_id);/*instruments*/
+                $this->changeStringDataByForegnKeys($file_string['Type'], $type_id);/*type*/
+
+                /** tickets insert */
+                $this->tickets_model->create($file_string);
 
             }
-
-            echo '<br>';
-        };
+        }
         echo (microtime(true) - $start) . "\n";
         echo '<br>';
         $memory_size = memory_get_usage();
         $memory_unit = array('Bytes', 'KB', 'MB', 'GB', 'TB', 'PB');
 // Display memory size into kb, mb etc.
         echo 'Used Memory : ' . round($memory_size / pow(1024, ($x = floor(log($memory_size, 1024)))), 2) . ' ' . $memory_unit[$x] . "\n";
-        return;
-//        $separator = new DataSeparator( $csv_rider->getFileData());
-//        $this->instruments_model->create($separator->getInstruments());
-//        $this->statuses_model->create($separator->getStatuses());
-//        $this->trading_rums_model->create($separator->getTradingRooms());
-//        $this->types_model->create($separator->getTypes());
-//        $this->tickets_model->create($separator->getTickets());
-//        $this->alerts_model->create($separator->getAlerts());
     }
 
     /**
@@ -102,7 +95,7 @@ final class CsvProcessingController
         $this->tickets_model = new TicketsModel();
         $this->alerts_model = new AlertsModel();
     }
-    private function changeStringDataByGoregnKeys(&$field, $new_param){
+    private function changeStringDataByForegnKeys(&$field, $new_param){
         $field = $new_param;
     }
 

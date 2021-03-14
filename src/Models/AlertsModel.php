@@ -14,7 +14,7 @@ use App\Traits\TicketsModelHelperTrait;
 use PDOException;
 
 
-final class AlertsModel extends MainModel implements IModels
+final class AlertsModel extends MainModel
 {
     use TicketsModelHelperTrait;
     public function __construct()
@@ -22,7 +22,7 @@ final class AlertsModel extends MainModel implements IModels
         parent::__construct();
         $this->table_name = 'alerts_tickets';
     }
-    public function create(array|string $data):int|bool
+    public function create(array|string $data, string $val_for_check=''):int|bool
     {
         /** params prepare */
         $statuses = $this->getStatuses();

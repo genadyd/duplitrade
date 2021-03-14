@@ -7,7 +7,7 @@ namespace App\Traits;
 use App\Models\InstrumentsModel;
 use App\Models\StatusesModel;
 use App\Models\TypesModel;
-use JetBrains\PhpStorm\Pure;
+
 
 trait TicketsModelHelperTrait
 {
@@ -39,47 +39,30 @@ trait TicketsModelHelperTrait
         }
         return $res;;
     }
-    /**
-     * @param int $num
-     * @return string
-     */
-    #[Pure] private function setMarkers(int $num):string{
-        $m = '( ';
-        for ($i = 0; $i<$num; $i++ ){
-            $m.='?, ';
-        }
-        $m = rtrim($m, ', ');
-        $m.= ' )';
-        return $m;
-    }
 
     /**
      * @param array $values_row
-     * @return array
      */
-    private function setValues(array $values_row):array{
-        $v = [];
-        $v[] = (int)$values_row['Ticket_ID'];
-        $v[] = (int)$values_row['trading_room_ID'];
-        $v[] = (int)$values_row['PositionType'];
-        $v[] = (int)$values_row['Instrument_Name'];
-        $v[] = (int)$values_row['Type'];
-        $v[] = floatval($values_row['Amount']);
-        $v[] = floatval($values_row['OpenPrice']);
-        $v[] = floatval($values_row['ClosePrice']);
-        $v[] = floatval($values_row['StopLoss']);
-        $v[] = floatval($values_row['TakeProfit']);
-        $v[] = floatval($values_row['Current']);
-        $v[] = floatval($values_row['PL']);
-        $v[] = floatval($values_row['GrossPL']);
-        $v[] = floatval($values_row['NetPL']);
-        $v[] = floatval($values_row['Swap']);
-        $v[] = preg_match('/\d{10}/',$values_row['OpenTimestamp'])?date("Y-m-d H:i:s",$values_row['OpenTimestamp']):NULL;
-        $v[] = preg_match('/\d{10}/',$values_row['CloseTimestamp'])?date("Y-m-d H:i:s",(int)$values_row['CloseTimestamp']):NULL;
-        $v[] = floatval($values_row['calculatedBalance']);
-        $v[] = (int)$values_row['closed_positions_cnt'];
-        $v[] = $this->timeDifCalculate($values_row['OpenTimestamp'], $values_row['CloseTimestamp']);
-        return $v;
+    private function setValues(array &$values_row):void{
+        $values_row['Ticket_ID'] = (int)$values_row['Ticket_ID'];
+        $values_row['trading_room_ID'] = (int)$values_row['trading_room_ID'];
+        $values_row['PositionType'] = (int)$values_row['PositionType'];
+        $values_row['Instrument_Name'] = (int)$values_row['Instrument_Name'];
+        $values_row['Type'] = (int)$values_row['Type'];
+        $values_row['Amount'] = floatval($values_row['Amount']);
+        $values_row['OpenPrice'] = floatval($values_row['OpenPrice']);
+        $values_row['ClosePrice'] = floatval($values_row['ClosePrice']);
+        $values_row['StopLoss'] = floatval($values_row['StopLoss']);
+        $values_row['TakeProfit'] = floatval($values_row['TakeProfit']);
+        $values_row['Current'] = floatval($values_row['Current']);
+        $values_row['PL'] = floatval($values_row['PL']);
+        $values_row['GrossPL'] = floatval($values_row['GrossPL']);
+        $values_row['NetPL'] = floatval($values_row['NetPL']);
+        $values_row['Swap'] = floatval($values_row['Swap']);
+        $values_row['OpenTimestamp'] = preg_match('/\d{10}/',$values_row['OpenTimestamp'])?date("Y-m-d H:i:s",$values_row['OpenTimestamp']):NULL;
+        $values_row['CloseTimestamp'] = preg_match('/\d{10}/',$values_row['CloseTimestamp'])?date("Y-m-d H:i:s",(int)$values_row['CloseTimestamp']):NULL;
+        $values_row['calculatedBalance'] = floatval($values_row['calculatedBalance']);
+        $values_row['closed_positions_cnt'] = (int)$values_row['closed_positions_cnt'];
     }
     /**
      * @return array
@@ -93,7 +76,7 @@ trait TicketsModelHelperTrait
      * @param string $end
      * @return false|int|null
      */
-    private function timeDifCalculate(string $start, string $end):bool|int|null{
+    private function timeDifCalculate(string|null $start, string|null $end):bool|int|null{
         if(preg_match('/\d{10}/',$start) && preg_match('/\d{10}/',$end)){
             return strtotime(date("Y-m-d H:i:s",(int)$end))-strtotime(date("Y-m-d H:i:s",(int)$start));
         }

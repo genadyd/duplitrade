@@ -10,7 +10,7 @@
 namespace App\Models;
 
 
-final class StatusesModel extends MainModel implements IModels
+final class StatusesModel extends MainModel
 {
     public function __construct()
     {
@@ -19,8 +19,8 @@ final class StatusesModel extends MainModel implements IModels
         $this->table_name = 'statuses';
     }
 
-    public function create(array|string $data):int
-    {
-      return parent::create($data);
-    }
+//    public function create(array|string $data, string $val_for_check=''):int
+//    {
+//      return parent::create($data, $val_for_check);
+//    }
 }

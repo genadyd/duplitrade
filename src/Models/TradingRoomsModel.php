@@ -25,7 +25,7 @@ final class TradingRoomsModel extends MainModel
 
     }
 
-    public function create(array|string $data):int
+    public function create(array|string $data, string $val_for_check=''):int
     {
 
        if(!$this->getById($data['id'])) {

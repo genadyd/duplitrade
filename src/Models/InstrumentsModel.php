@@ -10,7 +10,7 @@
 namespace App\Models;
 
 
-final class InstrumentsModel extends MainModel implements IModels
+final class InstrumentsModel extends MainModel
 {
     public function __construct()
     {
@@ -19,8 +19,5 @@ final class InstrumentsModel extends MainModel implements IModels
         $this->table_name = 'instruments';
     }
 
-    public function create(array|string $data):int
-    {
-     return parent::create($data);
-    }
+
 }
